@@ -22,7 +22,7 @@ public class DiceScript : MonoBehaviour {
 
 	public void rollDice  (){
 		
-		var randomNumber= Random.Range (1, 6);
+		var randomNumber= Random.Range (1, 7);
 		output.text = "" + randomNumber;
 		//Debug.Log ("hej"+randomNumber);
 	}
