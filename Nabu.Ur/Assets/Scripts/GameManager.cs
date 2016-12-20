@@ -7,13 +7,26 @@ public class GameManager : MonoBehaviour {
 	GameObject stone1;
 	GameObject stone2 ;
 	Text output;
+	Text posText;
+	Text phaseText;
+	Text tagText;
+
 
 	// Use this for initialization
 	 void Start () {
+		
 		stone1 = GameObject.Find ("Stone1");
 		stone2 = GameObject.Find("Stone2");
 	
-		output = GameObject.Find("roll").GetComponentInChildren<Text> ();
+		output = returnLabelWithTag ("PosText"); 
+		tagText = returnLabelWithTag ("TagText");
+		phaseText = returnLabelWithTag ("PhaseText");
+		posText=returnLabelWithTag("PosText");
+
+		tagText.text ="TagPos: ";
+		phaseText.text="Phase: ";
+		posText.text="TouchPos ";
+
 		turns = 0;
 		Vector3 pos = new Vector3 (10,10,0);
 
@@ -30,9 +43,13 @@ public class GameManager : MonoBehaviour {
 
 	void dedectIfTouched(){
 
-		if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+		if (Input.touchCount > 0 )
 		{
-			RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
+			//tagText.text ="TagPos: ";
+			phaseText.text="Phase: "+Input.GetTouch(0).phase;
+			posText.text="TouchPos "+Input.GetTouch(0).position;
+
+			/*RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
 			if(hit.collider.tag == "stone1")
 			{
 				output.text ="stone1"; 
@@ -43,12 +60,12 @@ public class GameManager : MonoBehaviour {
 			
 				output.text ="stone1"; 
 				//Debug.Log ("Touched stone2");
-			}
+			}*/
 		
 		}
 
 
-
+	//	posText.text = "TouchPos: " + Input.GetTouch (0).position;
 
 	
 	}
@@ -68,6 +85,17 @@ public class GameManager : MonoBehaviour {
 
 
 
+
+	Text returnLabelWithTag(string tag){
+	
+	foreach (Text textElement in GameObject.Find ("Canvas").GetComponentsInChildren<Text>()) {
+			if (tag.Equals(textElement.tag)) {
+				return textElement;
+			}
+		}
+		return null;
+	
+	}
 
 
 
