@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	//	stone1.transform.Rotate (0, 0, 50);
-		dedectIfTouched ();
+		//dedectIfTouched ();
 
 	}
 
@@ -46,8 +46,8 @@ public class GameManager : MonoBehaviour {
 		if (Input.touchCount > 0 )
 		{
 			//tagText.text ="TagPos: ";
-			phaseText.text="Phase: "+Input.GetTouch(0).phase;
-			posText.text="TouchPos "+Input.GetTouch(0).position;
+			//phaseText.text="Phase: "+Input.GetTouch(0).phase;
+			//posText.text="TouchPos "+Input.GetTouch(0).position;
 
 			/*RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
 			if(hit.collider.tag == "stone1")

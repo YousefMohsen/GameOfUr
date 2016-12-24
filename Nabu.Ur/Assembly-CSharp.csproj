@@ -51,7 +51,6 @@
      <Compile Include="Assets\Scripts\Touchinput.cs" />
      <Compile Include="Assets\Scripts\showTouchPos.cs" />
      <Compile Include="Assets\Scripts\switchScene.cs" />
-     <Compile Include="Assets\Scripts\touchPos.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
