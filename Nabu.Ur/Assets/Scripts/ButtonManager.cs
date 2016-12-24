@@ -22,19 +22,19 @@ public class ButtonManager : MonoBehaviour {
 		}
 
 
-	public void loadGameScene(){
+	public void loadTestGame(){
 		
-		SceneManager.LoadScene ("QuickGame");
+		SceneManager.LoadScene ("testField");
 
 	}
 
 	public void loadMenu(){
-		
-
 	SceneManager.LoadScene ("MainMenu");
+		}
 
+	public void newGame(){
+		SceneManager.LoadScene ("GameScene");
 	}
-
 }
 
 
