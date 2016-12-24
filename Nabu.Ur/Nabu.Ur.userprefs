@@ -1,12 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Touchinput.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameManager.cs" Line="53" Column="61" />
-      <File FileName="Assets/Scripts/ButtonManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="27" Column="28" />
       <File FileName="Assets/Scripts/showTouchPos.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/touchPos.cs" Line="1" Column="1" />
       <File FileName="Assets/DiceScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Touchinput.cs" Line="34" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -7,14 +7,14 @@ public class Touchinput : MonoBehaviour {
 	Text tagText;
 	Text posText;
 	Text phaseText;
-	int testint;
+
 
 	void Start () {
 		Debug.Log ("start works");
 		tagText = returnLabelWithTag ("TagText");
 		phaseText = returnLabelWithTag ("PhaseText");
 		posText=returnLabelWithTag("PosText");
-		testint = 0;
+
 
 
 	}
@@ -34,10 +34,10 @@ public class Touchinput : MonoBehaviour {
 			RaycastHit2D hit  = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), Vector2.zero);
 
 			//			
-			testint++;
-			Debug.Log (testint+" f");
-	//		posText.text = "gameObjectTag: " + hit.transform.gameObject.tag;
-			phaseText.text =  testint+" f";
+
+		
+			posText.text = "gameObjectTag: " + hit.transform.gameObject.tag;
+			phaseText.text = hit.collider.tag;
 			if(hit.collider != null)
 
 			{
