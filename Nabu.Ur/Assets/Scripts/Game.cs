@@ -4,10 +4,10 @@ using System.Collections;
 public class Game : MonoBehaviour {
 	Vector2[] board = new Vector2[20]; 
 	// Use this for initialization
-	Player human;
+
 	void Start () {
 
-		human = new Player ();
+	
 
 		initBoardPosition ();
 

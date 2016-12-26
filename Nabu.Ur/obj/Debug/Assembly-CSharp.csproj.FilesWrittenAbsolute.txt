@@ -1,0 +1,17 @@
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/obj/Debug/Assembly-CSharp.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/UnityEngine.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/UnityEditor.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Mono.Cecil.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Unity.DataContract.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/Alkhozai/Documents/UgitTesting/Nabu.Ur/Temp/bin/Debug/Mono.Cecil.Mdb.dll
