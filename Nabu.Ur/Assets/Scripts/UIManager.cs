@@ -11,24 +11,13 @@ public class UIManager : MonoBehaviour {
 	void Start () {
 		diceLabel = returnLabelWithTag ("diceLabel");
 
-
-
-
-
 	//setDiceLabel ("Method works!");
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-		selectStone();
-		if (selectedStone == null) {
-			setDiceLabel ("no selected stone");
-		}
-		else{
-			setDiceLabel (selectedStone.tag);
-		}
+		selectedStoneStatus ();
 	}
 
 	public void setDiceLabel(string str){
@@ -57,7 +46,7 @@ public class UIManager : MonoBehaviour {
 					Debug.Log ("line: 57");
 				selectedStone = hit.transform.gameObject;
 		
-				} else if (selectedStone != null && hit.collider.tag.Contains ("A")) {
+				} else if (selectedStone != null && hit.collider.tag.Length==2) {
 					Debug.Log ("line: 61");
 					Debug.Log (hit.transform.gameObject.tag+" "+hit.transform.gameObject.transform.position);
 					Debug.Log ("selectedStone"+selectedStone.transform.position);
@@ -87,7 +76,7 @@ public class UIManager : MonoBehaviour {
 	void moveStone(){
 		RaycastHit2D hit  = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), Vector2.zero);
 
-		if (hit.collider.tag.Contains ("A") && selectedStone != null) {
+		if (hit.collider.tag.Length==2 && selectedStone != null) {
 			selectedStone.transform.position = hit.transform.position;
 			Debug.Log ("selectedStone: "+selectedStone.transform.position+" Field: "+hit.collider.tag +" "+hit.transform.position );
 		}
@@ -97,7 +86,17 @@ public class UIManager : MonoBehaviour {
 
 
 
+	void selectedStoneStatus(){//delete me
+	
 
+		selectStone();
+		if (selectedStone == null) {
+			setDiceLabel ("no selected stone");
+		}
+		else{
+			setDiceLabel (selectedStone.tag);
+		}
+	}
 
 	Text returnLabelWithTag(string tag){
 
