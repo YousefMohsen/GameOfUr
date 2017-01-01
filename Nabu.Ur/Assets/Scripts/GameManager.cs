@@ -2,29 +2,68 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
-	UIManager ui;
-	Game newGame;
-	Player human; 	
-	// Use this for initialization
-	void Start () {
-		ui = new UIManager ();
-		newGame = new Game();
-		human = new Player ();
-	
+public class GameManager  {
+
+	Game game;
+	//UIManager uim = (UIManager)GameObject.FindGameObjectWithTag("Canvas").GetComponent(typeof(UIManager));
+
+	UIManager uim = new UIManager();
+	public GameManager(){
+		startGame ();
+
+	}
+
+	public void setLabel(string str){
+		uim.setDiceLabel (str);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+	}
+	 void startGame(){
+		game = new Game();
+
+		while(game.finished!=true){
+
+			player1Turn();//player1 turn
+			doTjek();// do tjek
+			player2Turn() ;//player2 turn
+			doTjek();//do tjek
+
+		}
+	
+	
 	
 	}
 
+	public void printTest(){
 
-	public void rollDice(){
-
-	ui.setDiceLabel ("Throwed: "+newGame.rollDice ());
+	game.printBoardStatus ();
 	}
 
 
+
+	void player1Turn(){
+
+
+	}
+	void player2Turn(){
+	}
+	void doTjek(){
+		if (game.player1.won == true || game.player2.won == true) {//1 tjek if anyone has won
+			game.finished = true;
+		}
+	}
+
+
+	public void p1StoneLanded(string fieldName){
+	
+		game.p1StoneLanded (fieldName);
+	}
+	public void p2StoneLanded(string fieldName){
+
+		game.p2StoneLanded (fieldName);
+	}
 
 }
