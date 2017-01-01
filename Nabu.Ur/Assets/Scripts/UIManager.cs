@@ -2,15 +2,21 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class UIManager {
+public class UIManager : MonoBehaviour {
 	private static Text diceLabel;
 	GameObject selectedStone;
-	//GameManager gm;
+	GameManager gm;
+
 
 	// Use this for initialization
+
+
+
+
 	void Start () {
-		//gm = new GameManager();
+		gm = new GameManager();
 		diceLabel = returnLabelWithTag ("diceLabel");
+
 
 		//gm.printTest ();
 	//setDiceLabel ("Method works!");

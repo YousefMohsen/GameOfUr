@@ -5,17 +5,17 @@ using UnityEngine.UI;
 public class GameManager  {
 
 	Game game;
-	//UIManager uim = (UIManager)GameObject.FindGameObjectWithTag("Canvas").GetComponent(typeof(UIManager));
+	UIManager uim = (UIManager)GameObject.FindGameObjectWithTag("Canvas").GetComponent(typeof(UIManager));
 
-	UIManager uim = new UIManager();
+
 	public GameManager(){
 		startGame ();
+		uim.setDiceLabel("messi");
 
+		//uim.setDiceLabel ("launch works!");
 	}
 
-	public void setLabel(string str){
-		uim.setDiceLabel (str);
-	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -24,14 +24,14 @@ public class GameManager  {
 	 void startGame(){
 		game = new Game();
 
-		while(game.finished!=true){
+		/*while(game.finished!=true){
 
 			player1Turn();//player1 turn
 			doTjek();// do tjek
 			player2Turn() ;//player2 turn
 			doTjek();//do tjek
 
-		}
+		}*/
 	
 	
 	
