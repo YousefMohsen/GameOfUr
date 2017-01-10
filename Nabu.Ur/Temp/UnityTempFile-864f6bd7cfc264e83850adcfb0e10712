@@ -94,7 +94,6 @@
 -define:UNITY_TEAM_LICENSE
 -define:ENABLE_IOS_ON_DEMAND_RESOURCES
 -define:ENABLE_IOS_APP_SLICING
-'Assets/Launch.cs'
 'Assets/Scripts/ButtonManager.cs'
 'Assets/Scripts/DiceScript.cs'
 'Assets/Scripts/Game.cs'

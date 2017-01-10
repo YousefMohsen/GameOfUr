@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class Game  {
 	public Player player1;
 	public Player player2;
+	public Player currentPlayer;
 	public bool finished = false;
 
 
@@ -16,8 +17,10 @@ public class Game  {
 
 	public Game(){
 		initField ();
-		player1 = new Player ("Gilgamesh");
-		player2 = new Player ("Nabu");
+		player1 = new Player ("Gilgamesh", "black");
+		player2 = new Player ("Nabu","white");
+		currentPlayer = player1;
+
 	}
 	// Use this for initialization
 
@@ -28,12 +31,26 @@ public class Game  {
 	}
 
 
+	void runGame(){
+
+	
+
+			player1Turn ();//player1 turn
+
+			player2Turn ();//player2 turn
 
 
 
+	}
 
+	void player1Turn(){
+		currentPlayer = player2;
+	}
 
+	void player2Turn(){
+		currentPlayer = player1;
 
+	}
 
 
 	public int rollDice  (){//returns a random number between 1 & 4
@@ -88,7 +105,6 @@ public class Game  {
 		Debug.Log("------------");
 	
 	}
-
 
 
 }

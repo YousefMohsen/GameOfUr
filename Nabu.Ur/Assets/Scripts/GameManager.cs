@@ -2,38 +2,28 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GameManager  {
+public class GameManager : MonoBehaviour  {
 
 	Game game;
-	UIManager uim = (UIManager)GameObject.FindGameObjectWithTag("Canvas").GetComponent(typeof(UIManager));
+	UIManager uim; //(UIManager)GameObject.FindGameObjectWithTag("Canvas").GetComponent(typeof(UIManager));
 
 
-	public GameManager(){
+	void Start(){
+		uim = new UIManager (GameObject.FindGameObjectWithTag ("Canvas"), Camera.main);
+		Debug.Log ("start works");
 		startGame ();
-		uim.setDiceLabel("messi");
-
-		//uim.setDiceLabel ("launch works!");
+	
 	}
-
-
 	
 	// Update is called once per frame
 	void Update () {
-
+		uim.Update ();
 	}
+
+
 	 void startGame(){
 		game = new Game();
-
-		/*while(game.finished!=true){
-
-			player1Turn();//player1 turn
-			doTjek();// do tjek
-			player2Turn() ;//player2 turn
-			doTjek();//do tjek
-
-		}*/
-	
-	
+		uim.setCurrentPlayerLabel (game.currentPlayer.name);
 	
 	}
 
@@ -47,23 +37,22 @@ public class GameManager  {
 	void player1Turn(){
 
 
+	
+	doTjek();
 	}
 	void player2Turn(){
+
+	
+		doTjek();
 	}
 	void doTjek(){
+		
 		if (game.player1.won == true || game.player2.won == true) {//1 tjek if anyone has won
 			game.finished = true;
 		}
+		uim.setCurrentPlayerLabel ("game.currentPlayer.name");
 	}
 
 
-	public void p1StoneLanded(string fieldName){
-	
-		game.p1StoneLanded (fieldName);
-	}
-	public void p2StoneLanded(string fieldName){
-
-		game.p2StoneLanded (fieldName);
-	}
 
 }

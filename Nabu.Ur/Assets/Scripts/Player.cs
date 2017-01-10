@@ -9,10 +9,12 @@ public class Player {
 
 	public string name;
 	public bool won;
+	public string color;
 
-	public Player(string aname)
+	public Player(string aname, string aColor)
 	{
 		name = aname;
+		color = aColor;
 	}
 	void Start () {
 		won = false;
