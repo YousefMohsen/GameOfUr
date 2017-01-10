@@ -15,6 +15,7 @@ public class Player {
 	{
 		name = aname;
 		color = aColor;
+		Debug.Log ("player created"+ aname);
 	}
 	void Start () {
 		won = false;

@@ -2,14 +2,15 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour  {
+public class GameManager   {
 
 	Game game;
-	UIManager uim; //(UIManager)GameObject.FindGameObjectWithTag("Canvas").GetComponent(typeof(UIManager));
 
-
+	public GameManager(){
+		Start ();
+	}
 	void Start(){
-		uim = new UIManager (GameObject.FindGameObjectWithTag ("Canvas"), Camera.main);
+
 		Debug.Log ("start works");
 		startGame ();
 	
@@ -17,13 +18,13 @@ public class GameManager : MonoBehaviour  {
 	
 	// Update is called once per frame
 	void Update () {
-		uim.Update ();
+
 	}
+
 
 
 	 void startGame(){
 		game = new Game();
-		uim.setCurrentPlayerLabel (game.currentPlayer.name);
 	
 	}
 
@@ -32,25 +33,29 @@ public class GameManager : MonoBehaviour  {
 	game.printBoardStatus ();
 	}
 
+	public Player getCurrentPlayer(){
 
+		return game.currentPlayer;
 
-	void player1Turn(){
-
-
-	
-	doTjek();
 	}
-	void player2Turn(){
 
-	
-		doTjek();
+	public void turnEnded (){
+
+
+
+		game.changeCurrentPlayer ();
 	}
+
+
+
+
+
 	void doTjek(){
 		
 		if (game.player1.won == true || game.player2.won == true) {//1 tjek if anyone has won
 			game.finished = true;
 		}
-		uim.setCurrentPlayerLabel ("game.currentPlayer.name");
+
 	}
 
 

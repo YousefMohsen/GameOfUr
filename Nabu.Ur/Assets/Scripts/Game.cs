@@ -17,7 +17,7 @@ public class Game  {
 
 	public Game(){
 		initField ();
-		player1 = new Player ("Gilgamesh", "black");
+		player1 = new Player ("Gudea", "black");
 		player2 = new Player ("Nabu","white");
 		currentPlayer = player1;
 
@@ -105,6 +105,15 @@ public class Game  {
 		Debug.Log("------------");
 	
 	}
+	public void changeCurrentPlayer(){
+		if (currentPlayer == player1) {
+			currentPlayer = player2;
+		} else {
+			currentPlayer = player1;
+		
+		}
+	
 
+	}
 
 }

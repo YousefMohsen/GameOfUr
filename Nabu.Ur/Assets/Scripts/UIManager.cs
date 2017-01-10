@@ -2,32 +2,28 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class UIManager  {
+public class UIManager : MonoBehaviour {
 	private static Text diceLabel;
 	private static Text currentPLabel;
 	GameObject selectedStone;
-	GameObject canvas;
-	Camera camera;
+	GameManager gm;
+
 
 
 	// Use this for initialization
 
 
 
-	public UIManager(GameObject gamObj,Camera cam){
-		canvas = gamObj;
-		camera = cam;
-		Start ();
-	}
+
 	void Start () {
-	//	gm = new GameManager();
+		gm = new GameManager();
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
 	
 
-		//gm.printTest ();
-	//setDiceLabel ("Method works!");
-	
+		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+
+
 	}
 	
 	// Update is called once per frame
@@ -39,7 +35,7 @@ public class UIManager  {
 		selectStone ();
 	selectedStoneStatus ();
 		}
-		Debug.Log (selectedStone.name);
+
 	
 
 	}
@@ -61,26 +57,25 @@ public class UIManager  {
 	//onnly if player1s turn
 
 
-		RaycastHit2D hit = Physics2D.Raycast (camera.ScreenToWorldPoint ((Input.GetTouch (0).position)), Vector2.zero);
+		RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint ((Input.GetTouch (0).position)), Vector2.zero);
 		
 			if (hit.collider == null) {//if no object is touched
 			highlightStoneOFF(selectedStone);
 				selectedStone = null;
 		} 	else{// if an object is touched
 			
-			if (hit.collider.tag.Contains ("black") ) {//change black to currentPlayer.stoneColor
+			if (hit.collider.tag.Contains (gm.getCurrentPlayer().color) ) {//change black to currentPlayer.stoneColor
 				highlightStoneOFF(selectedStone);
 				selectedStone = hit.transform.gameObject;
 				highlightStone(selectedStone);
-			
+
 
 		
 			} else if (selectedStone != null && hit.collider.tag.Length==2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
 					 
 				moveStone (hit.collider.gameObject);
-				highlightStoneOFF(selectedStone);
-				selectedStone = null;
-			
+
+				
 
 					//gm.printTest ();
 
@@ -117,7 +112,7 @@ halo.enabled = true;
 	}
 
 	string returnFieldOfStone(Vector3 stonePosition){//delete
-		RaycastHit2D hit  = Physics2D.Raycast(camera.ScreenToWorldPoint((stonePosition)), Vector2.zero);
+		RaycastHit2D hit  = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((stonePosition)), Vector2.zero);
 		return hit.collider.tag;
 
 	}
@@ -126,8 +121,11 @@ halo.enabled = true;
 
 	void moveStone(GameObject moveTo){
 		selectedStone.transform.position = moveTo.transform.position;
-	
-	
+		highlightStoneOFF(selectedStone);
+		selectedStone = null;
+		gm.turnEnded ();
+		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+
 	}
 
 
@@ -147,7 +145,7 @@ halo.enabled = true;
 
 	Text returnLabelWithTag(string tag){
 
-		foreach (Text textElement in canvas.GetComponentsInChildren<Text>()) {
+		foreach (Text textElement in GameObject.FindGameObjectWithTag ("Canvas").GetComponentsInChildren<Text>()) {
 			if (tag.Equals(textElement.tag)) {
 				return textElement;
 			}
