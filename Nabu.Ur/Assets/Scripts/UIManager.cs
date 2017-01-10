@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour {
 
 		
 			} else if (selectedStone != null && hit.collider.tag.Length==2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
-					 
+				Debug.Log(hit.collider.shapeCount);
 				moveStone (hit.collider.gameObject);
 
 				
