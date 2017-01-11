@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour {
 	private static Text currentPLabel;
 	GameObject selectedStone;
 	GameManager gm;
+	GameObject white1;
 
 
 
@@ -19,10 +20,11 @@ public class UIManager : MonoBehaviour {
 		gm = new GameManager();
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
+		white1 = GameObject.FindGameObjectWithTag ("white1");
+			
+		Debug.Log (white1.tag+" "+white1.transform.position);
 	
-
 		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
-
 
 	}
 	
@@ -51,48 +53,72 @@ public class UIManager : MonoBehaviour {
 
 	}
 
+	//hits = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition),100);
 	// player controller 
 
 	void selectStone(){
-	//onnly if player1s turn
+		//onnly if player1s turn
+		//RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint ((Input.GetTouch (0).position)), Vector2.zero);
+		RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll (Camera.main.ScreenPointToRay ((Input.GetTouch (0).position)), 100);
+		RaycastHit2D hit;
 
 
-		RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint ((Input.GetTouch (0).position)), Vector2.zero);
-		
-			if (hit.collider == null) {//if no object is touched
-			highlightStoneOFF(selectedStone);
-				selectedStone = null;
-		} 	else{// if an object is touched
-			
-			if (hit.collider.tag.Contains (gm.getCurrentPlayer().color) ) {//change black to currentPlayer.stoneColor
-				highlightStoneOFF(selectedStone);
+
+		if (hits.Length == 0) {//if no objects touched
+			highlightStoneOFF (selectedStone);
+			selectedStone = null;
+		}
+		if (hits.Length == 1) {//hit a field OR a stone
+			hit = hits[0];
+
+			if (hit.collider.tag.Contains (gm.getCurrentPlayer ().color)) {
+
+				highlightStoneOFF (selectedStone);
 				selectedStone = hit.transform.gameObject;
-				highlightStone(selectedStone);
+				highlightStone (selectedStone);
 
 
-		
-			} else if (selectedStone != null && hit.collider.tag.Length==2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
-				Debug.Log(hit.collider.shapeCount);
+
+			} else if (selectedStone != null && hit.collider.tag.Length == 2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
+				Debug.Log (hit.collider.tag);
+				//Collider[] hitColliders = Physics.OverlapSphere (hit.collider.gameObject.transform.position, 1);
+				//Debug.Log (hitColliders.Length);
 				moveStone (hit.collider.gameObject);
 
-				
 
-					//gm.printTest ();
 
-					//	Debug.Log ("heeeeej" + selectedStone.transform.position.Set());
-					//gm.printTest ();
+				//gm.printTest ();
+
+				//	Debug.Log ("heeeeej" + selectedStone.transform.position.Set());
+				//gm.printTest ();
 
 			}
+
+
+			 
+		}else if(hits.Length == 2){//hit a field AND a stone
+			RaycastHit2D stone = hits[0];
+			RaycastHit2D field = hits[1];
+			Debug.Log ("l103 stone:"+stone.collider.tag+" field"+field.collider.tag);
+			if (stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
+		//		stone.transform.position = white1.transform.position;
+		//		moveStone (field.gameObject);
+			} else if (stone.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//if there is one of my stones on the field
 			
-
+				Debug.Log ("l 109 color: "+gm.getCurrentPlayer ().color);
+				highlightStoneOFF (selectedStone);
+				selectedStone = stone.transform.gameObject;
+				highlightStone (selectedStone);
 			}
 
 
-		
+		}
 
 
 
-	
+
+
+
 	
 	}
 
@@ -100,14 +126,14 @@ public class UIManager : MonoBehaviour {
 		if (stone != null) {
 Behaviour halo = (Behaviour)stone.GetComponent ("Halo");
 halo.enabled = true;
-			Debug.Log(stone.name +" highlighted");
+
 		}
 	}
 	void highlightStoneOFF(GameObject stone){
 		if (stone != null) {
 			Behaviour halo = (Behaviour)stone.GetComponent ("Halo");
 			halo.enabled = false;
-			Debug.Log ("l 112");
+			
 		}
 	}
 
@@ -120,6 +146,8 @@ halo.enabled = true;
 
 
 	void moveStone(GameObject moveTo){
+
+			Debug.Log("MOVESTONE "+ moveTo.tag +moveTo.transform.position);
 		selectedStone.transform.position = moveTo.transform.position;
 		highlightStoneOFF(selectedStone);
 		selectedStone = null;
@@ -130,7 +158,19 @@ halo.enabled = true;
 
 
 
+	string getEnemyColor(string currentPlayerColor){
 
+		if (currentPlayerColor.Equals ("white")) {
+			return "black";
+		} else if (currentPlayerColor.Equals ("black")) {
+		
+			return "white";
+		} else {
+			return null;
+		}
+
+
+	}
 	void selectedStoneStatus(){//delete me
 	
 
