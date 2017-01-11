@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour {
 	private static Text diceLabel;
 	private static Text currentPLabel;
 	GameObject selectedStone;
 	GameManager gm;
-	GameObject white1;
+	//GameObject[] whites = new GameObject[5];
+	Vector3[] stonePositions = new Vector3[5];
+
 
 
 
@@ -20,12 +23,21 @@ public class UIManager : MonoBehaviour {
 		gm = new GameManager();
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
-		white1 = GameObject.FindGameObjectWithTag ("white1");
-			
-		Debug.Log (white1.tag+" "+white1.transform.position);
 	
-		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+	/*	for (int i = 1; i < 6; i++) {
+	
+			whites[i-1] = GameObject.FindGameObjectWithTag ("white"+i);
+		
+		}
 
+
+		for (int i = 0; i < 5; i++) {
+			Debug.Log (whites[i].tag+" - "+whites[i].transform.position);
+		}*/
+		initStonePositions ();
+		Debug.Log (stonePositions [0]);
+		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+			
 	}
 	
 	// Update is called once per frame
@@ -68,7 +80,7 @@ public class UIManager : MonoBehaviour {
 			highlightStoneOFF (selectedStone);
 			selectedStone = null;
 		}
-		if (hits.Length == 1) {//hit a field OR a stone
+		if (hits.Length == 1) {//if hit a field OR a stone
 			hit = hits[0];
 
 			if (hit.collider.tag.Contains (gm.getCurrentPlayer ().color)) {
@@ -96,13 +108,19 @@ public class UIManager : MonoBehaviour {
 
 
 			 
-		}else if(hits.Length == 2){//hit a field AND a stone
+		}else if(hits.Length == 2){//if hit a field AND a stone
 			RaycastHit2D stone = hits[0];
 			RaycastHit2D field = hits[1];
 			Debug.Log ("l103 stone:"+stone.collider.tag+" field"+field.collider.tag);
-			if (stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
+			if (selectedStone!=null && stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
 		//		stone.transform.position = white1.transform.position;
-		//		moveStone (field.gameObject);
+
+				killStone (stone.transform.gameObject);
+				moveStone (field.collider.gameObject);
+				//		moveStone (field.collider.gameObject);
+			
+			
+			
 			} else if (stone.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//if there is one of my stones on the field
 			
 				Debug.Log ("l 109 color: "+gm.getCurrentPlayer ().color);
@@ -181,6 +199,58 @@ halo.enabled = true;
 		else{
 			setDiceLabel (selectedStone.tag);
 		}
+	}
+
+	void killStone(GameObject killedSton){
+		
+	
+
+			
+		if (killedSton.tag.Contains("black")) {//if black stone i skilled
+
+			for (int i = 0; i < 5; i++) {
+				
+				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (stonePositions [i]), Vector2.zero);
+				if (hit.collider == null) {
+					Vector3 temp = stonePositions [i];
+					temp.x = stonePositions [i].x * (-1.0F);
+					killedSton.transform.position = temp;
+				}
+			}
+
+			} else {//if white stone i skilled
+			for (int i = 0; i < 5; i++) {
+
+				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (stonePositions [i]), Vector2.zero);
+				if (hit.collider == null) {
+					killedSton.transform.position = stonePositions [i];
+				}
+			}
+
+
+			
+			}
+		
+		
+
+		/*for (int i = 0; i < 5; i++) {
+				Vector3 temp = stonePositions [i];
+				temp.x = stonePositions [i].x * (-1.0F);
+				whites [i].transform.position = temp;
+			}*/
+}
+
+	void initStonePositions(){
+	
+		stonePositions [0] = new Vector3 (2.2F, -3.9F, 90.0F);
+		stonePositions [1] = new Vector3 (2.2F, -2.6F, 90.0F);
+		stonePositions [2] = new Vector3 (2.2F, -3.2F, 90.0F);
+		stonePositions [3] = new Vector3 (2.2F, -1.4F, 90.0F);
+		stonePositions [4] = new Vector3 (2.2F, -2.0F, 90.0F);
+	
+	
+	
+	
 	}
 
 	Text returnLabelWithTag(string tag){
