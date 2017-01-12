@@ -20,10 +20,11 @@ public class UIManager : MonoBehaviour {
 
 
 	void Start () {
+		
 		gm = new GameManager();
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
-	
+
 	/*	for (int i = 1; i < 6; i++) {
 	
 			whites[i-1] = GameObject.FindGameObjectWithTag ("white"+i);
@@ -208,36 +209,22 @@ halo.enabled = true;
 			
 		if (killedSton.tag.Contains("black")) {//if black stone i skilled
 
-			for (int i = 0; i < 5; i++) {
-				
-				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (stonePositions [i]), Vector2.zero);
-				if (hit.collider == null) {
-					Vector3 temp = stonePositions [i];
-					temp.x = stonePositions [i].x * (-1.0F);
+	
+			Vector3 temp = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
+			temp.x = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1].x * (-1.0F);
 					killedSton.transform.position = temp;
-				}
-			}
+	
 
 			} else {//if white stone i skilled
-			for (int i = 0; i < 5; i++) {
 
-				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (stonePositions [i]), Vector2.zero);
-				if (hit.collider == null) {
-					killedSton.transform.position = stonePositions [i];
-				}
-			}
-
+			killedSton.transform.position = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
+		
 
 			
 			}
-		
+
 		
 
-		/*for (int i = 0; i < 5; i++) {
-				Vector3 temp = stonePositions [i];
-				temp.x = stonePositions [i].x * (-1.0F);
-				whites [i].transform.position = temp;
-			}*/
 }
 
 	void initStonePositions(){

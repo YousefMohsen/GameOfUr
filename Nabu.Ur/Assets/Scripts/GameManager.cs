@@ -11,7 +11,7 @@ public class GameManager   {
 	}
 	void Start(){
 
-		Debug.Log ("start works");
+
 		startGame ();
 	
 	}
