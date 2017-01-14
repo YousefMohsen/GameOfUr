@@ -28,10 +28,6 @@ public class GameManager   {
 	
 	}
 
-	public void printTest(){
-
-	game.printBoardStatus ();
-	}
 
 	public Player getCurrentPlayer(){
 

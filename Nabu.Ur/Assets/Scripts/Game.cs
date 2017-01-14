@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 
 
+
 public class Game  {
 	public Player player1;
 	public Player player2;
@@ -13,14 +14,15 @@ public class Game  {
 
 
 	Dictionary<string, int > boardStatus = new Dictionary<string, int>();
-
+	List<string> p1FieldOrder = new List<string>();
+	List<string> p2FieldOrder = new List<string>();
 
 	public Game(){
 		initField ();
-		player1 = new Player ("Gudea", "black");
-		player2 = new Player ("Nabu","white");
-		currentPlayer = player1;
-
+		player1 = new Player ("Gudea",1);
+		player2 = new Player ("Nabu",2);
+		currentPlayer = player2;
+		Debug.Log ("checkIfAllowedMove: " + checkIfAllowedMove ("C1", "B3", 3));
 	}
 	// Use this for initialization
 
@@ -62,49 +64,78 @@ public class Game  {
 	}
 
 	void initField(){
-		boardStatus.Add("A1", 0);
-		boardStatus.Add("A2", 0);
-		boardStatus.Add("A3", 0);
-		boardStatus.Add("A4", 0);
-		boardStatus.Add("A7", 0);
-		boardStatus.Add("A8", 0);
 
-		boardStatus.Add("B1", 0);
-		boardStatus.Add("B2",0);
-		boardStatus.Add("B3", 0);
-		boardStatus.Add("B4",0);
-		boardStatus.Add("B5", 0);
-		boardStatus.Add("B6",0);
-		boardStatus.Add("B7",0);
-		boardStatus.Add("B8", 0);
+		// player 1
 
-		boardStatus.Add("C1", 0);
-		boardStatus.Add("C2", 0);
-		boardStatus.Add("C3", 0);
-		boardStatus.Add("C4", 0);
-		boardStatus.Add("C7", 0);
-		boardStatus.Add("C8", 0);
-	}
+		p1FieldOrder.Add( "A4");
+		p1FieldOrder.Add("A3");
+		p1FieldOrder.Add("A2");
+		p1FieldOrder.Add( "A1");
 
-	public void p1StoneLanded(string fieldName){
-		boardStatus [fieldName] = 1;
-	}
-	public void p2StoneLanded(string fieldName){
-		boardStatus [fieldName] = 1;
-	}
+		p1FieldOrder.Add("B1");
+		p1FieldOrder.Add("B2");
+		p1FieldOrder.Add("B3");
+		p1FieldOrder.Add("B4");
+		p1FieldOrder.Add("B5");
+		p1FieldOrder.Add("B6");
+		p1FieldOrder.Add("B7");
+		p1FieldOrder.Add("B8");
 
-	public void printBoardStatus(){ //to delete
 
-		Debug.Log("!!!! BoardStatus !!!!:");
+		p1FieldOrder.Add("A8");
+		p1FieldOrder.Add("A7");
 
-		foreach (string k in boardStatus.Keys )
-		{
 
-			Debug.Log(k+ " - "+boardStatus[k]);
-		}
-		Debug.Log("------------");
+		// player 2 
 	
+		p2FieldOrder.Add( "C4");
+		p2FieldOrder.Add("C3");
+		p2FieldOrder.Add("C2");
+		p2FieldOrder.Add( "C1");
+
+		p2FieldOrder.Add("B1");
+		p2FieldOrder.Add("B2");
+		p2FieldOrder.Add("B3");
+		p2FieldOrder.Add("B4");
+		p2FieldOrder.Add("B5");
+		p2FieldOrder.Add("B6");
+		p2FieldOrder.Add("B7");
+		p2FieldOrder.Add("B8");
+
+
+		p2FieldOrder.Add("C8");
+		p2FieldOrder.Add("C7");
+
+
 	}
+
+
+
+	public bool checkIfAllowedMove(string currentField, string moveToField, int roll){
+		List<string> fieldOrder;
+		int newInex;
+
+		if (currentPlayer.id == 1) {
+			fieldOrder = p1FieldOrder;
+		} else {
+			fieldOrder = p2FieldOrder;
+		
+		}
+		newInex = fieldOrder.IndexOf (currentField) + roll; 
+		if (fieldOrder [newInex].Equals (moveToField)) {
+		
+			return true;
+		} else {
+			return false;
+		}
+
+
+
+				}
+
+
+
+
 	public void changeCurrentPlayer(){
 		if (currentPlayer == player1) {
 			currentPlayer = player2;

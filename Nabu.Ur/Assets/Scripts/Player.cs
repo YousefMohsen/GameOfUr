@@ -10,12 +10,13 @@ public class Player {
 	public string name;
 	public bool won;
 	public string color;
+	public int id;
 
-	public Player(string aname, string aColor)
+	public Player(string aname, int anId)
 	{
 		name = aname;
-		color = aColor;
-	
+		id = anId;
+		setColor (id);
 	}
 	void Start () {
 		won = false;
@@ -31,7 +32,15 @@ public class Player {
 
 
 
+	void setColor(int ida){
 	
+		if (ida == 1) {
+			color = "black";
+		} else if (ida == 2) {
+			color = "white";
+		}
+	
+	}
 	
 	
 	//} 
