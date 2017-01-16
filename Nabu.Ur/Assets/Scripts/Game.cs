@@ -11,12 +11,15 @@ public class Game  {
 	public Player player2;
 	public Player currentPlayer;
 	public bool finished = false;
+	public bool playerHasRolled = false;
 	public int roll;
 
 
 	Dictionary<string, int > boardStatus = new Dictionary<string, int>();
 	List<string> p1FieldOrder = new List<string>();
 	List<string> p2FieldOrder = new List<string>();
+	List<string> rosettaFields = new List<string>();
+
 
 	public Game(){
 		initField ();
@@ -103,6 +106,14 @@ public class Game  {
 		p2FieldOrder.Add("C7");
 		// add finishline
 
+
+
+		///rosettaFields
+		rosettaFields.Add("A1");
+		rosettaFields.Add("C1");
+		rosettaFields.Add("B4");
+		rosettaFields.Add("A7");
+		rosettaFields.Add("C7");
 	}
 
 
@@ -139,7 +150,7 @@ public class Game  {
 			currentPlayer = player1;
 		
 		}
-	
+		playerHasRolled = false;
 
 	}
 
@@ -158,5 +169,28 @@ public class Game  {
 	}
 
 
+	public bool getPlayerHasRolled(){
+	
+		return playerHasRolled;
+	}
+
+
+	public void setPlayerHasRolled(bool plHaRo){
+
+		playerHasRolled=plHaRo;
+	}
+
+
+	public bool checkIfRosetta(string stoneTag){
+	
+		foreach (string f in rosettaFields) {
+			if (stoneTag.Equals (f)) {
+				return true;
+			}
+		
+		}
+		return false;
+	
+	}
 
 }

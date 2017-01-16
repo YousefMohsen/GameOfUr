@@ -73,4 +73,21 @@ public class GameManager   {
 	}
 
 
+	public bool getPlayerHasRolled(){
+
+		return game.playerHasRolled;
+	}
+
+
+	public void setPlayerHasRolled(bool plHaRo){
+
+		game.setPlayerHasRolled (plHaRo);
+	}
+
+	public bool checkIfRosetta(string stoneTag){
+	
+		return game.checkIfRosetta (stoneTag);
+	
+	}
+
 }

@@ -4,8 +4,9 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour {
-	private static Text diceLabel;
+	private static Text corner;
 	private static Text currentPLabel;
+	private static Text diceLabel;//to delete
 	GameObject selectedStone;
 	GameObject fromField;
 	GameManager gm;
@@ -23,8 +24,8 @@ public class UIManager : MonoBehaviour {
 		gm = new GameManager();
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
-
 	
+
 
 		initStonePositions ();
 
@@ -40,10 +41,9 @@ public class UIManager : MonoBehaviour {
 		
 
 		if (Input.touchCount > 0) {
-			Debug.Log ("touchType"+Input.GetTouch (0).position.GetType());
+			
 		selectStone ();
-	selectedStoneStatus ();
-
+	
 
 		}
 
@@ -67,67 +67,72 @@ public class UIManager : MonoBehaviour {
 	void selectStone(){
 		//onnly if player1s turn
 		//RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint ((Input.GetTouch (0).position)), Vector2.zero);
-		RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll (Camera.main.ScreenPointToRay ((Input.GetTouch (0).position)), 100);
-		RaycastHit2D hit;
 
-		if (hits.Length == 0) {//if no objects touched
-			highlightStoneOFF (selectedStone);
-			selectedStone = null;
-		} else if (hits.Length == 1) {//if hit a field OR a stone
-			hit = hits [0];
-			Debug.Log("length = 1 !!");
-			Debug.Log("fromField: "+fromField.tag);
-			if (hit.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//i stone
+		if (gm.getPlayerHasRolled() ) { //if player has throwed dice 
 
+			RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll (Camera.main.ScreenPointToRay ((Input.GetTouch (0).position)), 100);
+			RaycastHit2D hit;
+
+			if (hits.Length == 0) {//if no objects touched
 				highlightStoneOFF (selectedStone);
-				selectedStone = hit.transform.gameObject;
-				highlightStone (selectedStone);
+				selectedStone = null;
+			} else if (hits.Length == 1) {//if hit a field OR a stone
+				hit = hits [0];
+				Debug.Log ("length = 1 !!");
+				Debug.Log ("fromField: " + fromField.tag);
+				if (hit.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//i stone
+
+					highlightStoneOFF (selectedStone);
+					selectedStone = hit.transform.gameObject;
+					highlightStone (selectedStone);
 
 
 
-			} else if (selectedStone != null && hit.collider.tag.Length == 2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
+				} else if (selectedStone != null && hit.collider.tag.Length == 2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
 
-				moveStone (hit.collider.gameObject,fromField,getRoll());
-			}
+					moveStone (hit.collider.gameObject, fromField, gm.getRoll ());
+				}
 
-		} else if (hits.Length == 2) {//if hit a field AND a stone
-			RaycastHit2D stone = findStoneFromArray (hits);
-			RaycastHit2D field = findFieldFromArray (hits);
-			if (selectedStone != null && stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
-				//		stone.transform.position = white1.transform.position;
+			} else if (hits.Length == 2) {//if hit a field AND a stone
+				RaycastHit2D stone = findStoneFromArray (hits);
+				RaycastHit2D field = findFieldFromArray (hits);
+				if (selectedStone != null && stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
+					//		stone.transform.position = white1.transform.position;
 
-				killStone (stone.transform.gameObject);
+					if(gm.checkIfRosetta(field.collider.tag)!=true){//if enemy is not on a rosetta field
+					killStone (stone.transform.gameObject);
 		
-				moveStone (field.collider.gameObject,fromField,getRoll());
+					moveStone (field.collider.gameObject, fromField, gm.getRoll ());
+					}
 
 			
 			
 			
-			} else if (stone.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//if there is one of my stones on the field
+				} else if (stone.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//if there is one of my stones on the field
 			
-				fromField = field.collider.gameObject;
-				highlightStoneOFF (selectedStone);
-				selectedStone = stone.transform.gameObject;
-				highlightStone (selectedStone);
+					fromField = field.collider.gameObject;
+					highlightStoneOFF (selectedStone);
+					selectedStone = stone.transform.gameObject;
+					highlightStone (selectedStone);
+				}
+
+
+			} else {//to delete
+				Debug.Log ("ERROR! more than 2 hits!");
+				Debug.Log ("number of hits: " + hits.Length + ": ");
+
+				foreach (RaycastHit2D ahit in hits) {
+
+					Debug.Log (ahit.collider.tag + ": " + ahit.collider.transform.position);
+				}
 			}
 
 
-		} else {//to delete
-			Debug.Log ("ERROR! more than 2 hits!");
-			Debug.Log ("number of hits: "+hits.Length+": ");
 
-			foreach(RaycastHit2D ahit in hits){
 
-				Debug.Log (ahit.collider.tag+": "+ahit.collider.transform.position);
-			}
+
+
 		}
-
-
-
-
-
-
-	
 	}
 
 	void highlightStone(GameObject stone){
@@ -164,8 +169,18 @@ public class UIManager : MonoBehaviour {
 		selectedStone.transform.position = moveTo.transform.position;
 		highlightStoneOFF(selectedStone);
 		selectedStone = null;
-		gm.turnEnded ();
-		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+		
+		
+			if (gm.checkIfRosetta (moveTo.tag)) {//check if landen on rosetta field
+				gm.setPlayerHasRolled (false);
+
+			} else {
+				gm.turnEnded ();
+				setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+
+			}
+		
+		
 		}
 	}
 
@@ -184,17 +199,7 @@ public class UIManager : MonoBehaviour {
 
 
 	}
-	void selectedStoneStatus(){//delete me
-	
 
-	
-		if (selectedStone == null) {
-			setDiceLabel ("no selected stone");
-		}
-		else{
-			setDiceLabel (selectedStone.tag);
-		}
-	}
 
 	void killStone(GameObject killedSton){
 	
@@ -249,14 +254,16 @@ public class UIManager : MonoBehaviour {
 
 
 	public void rollDice(){
-		gm.rollDice();
+		if (gm.getPlayerHasRolled() == false) {
+			Debug.Log ("257 getPlayerHasRolled");
+			gm.rollDice ();
+			setDiceLabel (gm.getRoll () + " ");
+			gm.setPlayerHasRolled (true);
+		}
 	}
 
 
-	public int getRoll(){
-		return gm.getRoll();
 
-	}
 
 
 
