@@ -11,6 +11,7 @@ public class Game  {
 	public Player player2;
 	public Player currentPlayer;
 	public bool finished = false;
+	public int roll;
 
 
 	Dictionary<string, int > boardStatus = new Dictionary<string, int>();
@@ -21,8 +22,9 @@ public class Game  {
 		initField ();
 		player1 = new Player ("Gudea",1);
 		player2 = new Player ("Nabu",2);
-		currentPlayer = player2;
+		currentPlayer = player1;
 		Debug.Log ("checkIfAllowedMove: " + checkIfAllowedMove ("C1", "B3", 3));
+		roll = 3;
 	}
 	// Use this for initialization
 
@@ -55,18 +57,12 @@ public class Game  {
 	}
 
 
-	public int rollDice  (){//returns a random number between 1 & 4
 
-		var randomNumber= Random.Range (1, 5);
-		return randomNumber;
-
-
-	}
 
 	void initField(){
 
 		// player 1
-
+		p1FieldOrder.Add( "A0");// unplayed
 		p1FieldOrder.Add( "A4");
 		p1FieldOrder.Add("A3");
 		p1FieldOrder.Add("A2");
@@ -87,7 +83,7 @@ public class Game  {
 
 
 		// player 2 
-	
+		p1FieldOrder.Add( "C0");// unplayed
 		p2FieldOrder.Add( "C4");
 		p2FieldOrder.Add("C3");
 		p2FieldOrder.Add("C2");
@@ -105,13 +101,13 @@ public class Game  {
 
 		p2FieldOrder.Add("C8");
 		p2FieldOrder.Add("C7");
-
+		// add finishline
 
 	}
 
 
 
-	public bool checkIfAllowedMove(string currentField, string moveToField, int roll){
+	public bool checkIfAllowedMove(string fromField, string toField, int roll){
 		List<string> fieldOrder;
 		int newInex;
 
@@ -121,8 +117,8 @@ public class Game  {
 			fieldOrder = p2FieldOrder;
 		
 		}
-		newInex = fieldOrder.IndexOf (currentField) + roll; 
-		if (fieldOrder [newInex].Equals (moveToField)) {
+		newInex = fieldOrder.IndexOf (fromField) + roll; 
+		if (fieldOrder [newInex].Equals (toField)) {
 		
 			return true;
 		} else {
@@ -131,7 +127,7 @@ public class Game  {
 
 
 
-				}
+	}
 
 
 
@@ -146,5 +142,21 @@ public class Game  {
 	
 
 	}
+
+
+
+	public void rollDice  (){
+
+		roll = Random.Range (1, 5);
+
+	
+	}
+
+	public int getRoll(){
+		return roll;
+	
+	}
+
+
 
 }

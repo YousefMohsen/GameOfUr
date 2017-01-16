@@ -7,13 +7,12 @@ public class UIManager : MonoBehaviour {
 	private static Text diceLabel;
 	private static Text currentPLabel;
 	GameObject selectedStone;
+	GameObject fromField;
 	GameManager gm;
 	//GameObject[] whites = new GameObject[5];
 	Vector3[] stonePositions = new Vector3[5];
 
-
-
-
+	GameObject black3;
 	// Use this for initialization
 
 
@@ -25,20 +24,15 @@ public class UIManager : MonoBehaviour {
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
 
-	/*	for (int i = 1; i < 6; i++) {
 	
-			whites[i-1] = GameObject.FindGameObjectWithTag ("white"+i);
-		
-		}
 
-
-		for (int i = 0; i < 5; i++) {
-			Debug.Log (whites[i].tag+" - "+whites[i].transform.position);
-		}*/
 		initStonePositions ();
-		Debug.Log (stonePositions [0]);
+
 		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
 			
+
+	
+
 	}
 	
 	// Update is called once per frame
@@ -46,12 +40,13 @@ public class UIManager : MonoBehaviour {
 		
 
 		if (Input.touchCount > 0) {
-
+			Debug.Log ("touchType"+Input.GetTouch (0).position.GetType());
 		selectStone ();
 	selectedStoneStatus ();
+
+
 		}
 
-	
 
 	}
 
@@ -80,7 +75,8 @@ public class UIManager : MonoBehaviour {
 			selectedStone = null;
 		} else if (hits.Length == 1) {//if hit a field OR a stone
 			hit = hits [0];
-
+			Debug.Log("length = 1 !!");
+			Debug.Log("fromField: "+fromField.tag);
 			if (hit.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//i stone
 
 				highlightStoneOFF (selectedStone);
@@ -90,26 +86,26 @@ public class UIManager : MonoBehaviour {
 
 
 			} else if (selectedStone != null && hit.collider.tag.Length == 2 && Input.GetTouch (0).phase == TouchPhase.Ended) {//if a stone i selected and a field touched
-				Debug.Log (hit.collider.tag);
-				moveStone (hit.collider.gameObject);
+
+				moveStone (hit.collider.gameObject,fromField,getRoll());
 			}
 
 		} else if (hits.Length == 2) {//if hit a field AND a stone
 			RaycastHit2D stone = findStoneFromArray (hits);
 			RaycastHit2D field = findFieldFromArray (hits);
-			Debug.Log ("l103 stone:" + stone.collider.tag + " field" + field.collider.tag);
 			if (selectedStone != null && stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
 				//		stone.transform.position = white1.transform.position;
 
 				killStone (stone.transform.gameObject);
-				moveStone (field.collider.gameObject);
-				//		moveStone (field.collider.gameObject);
+		
+				moveStone (field.collider.gameObject,fromField,getRoll());
+
 			
 			
 			
 			} else if (stone.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//if there is one of my stones on the field
 			
-				Debug.Log ("l 109 color: " + gm.getCurrentPlayer ().color);
+				fromField = field.collider.gameObject;
 				highlightStoneOFF (selectedStone);
 				selectedStone = stone.transform.gameObject;
 				highlightStone (selectedStone);
@@ -141,6 +137,7 @@ public class UIManager : MonoBehaviour {
 
 		}
 	}
+		
 	void highlightStoneOFF(GameObject stone){
 		if (stone != null) {
 			Behaviour halo = (Behaviour)stone.GetComponent ("Halo");
@@ -157,15 +154,19 @@ public class UIManager : MonoBehaviour {
 
 
 
-	void moveStone(GameObject moveTo){
+	void moveStone(GameObject moveTo, GameObject moveFrom,int roll){
+		Debug.Log ("roll" + roll);
+		Debug.Log ("moveFrom" + moveFrom.tag);
+		Debug.Log ("moveTo" + moveTo.tag);
+		if(gm.checkIfAllowedMove(moveFrom.tag, moveTo.tag,roll)){
 
-			Debug.Log("MOVESTONE "+ moveTo.tag +moveTo.transform.position);
+		Debug.Log("MOVESTONE "+ moveTo.tag );
 		selectedStone.transform.position = moveTo.transform.position;
 		highlightStoneOFF(selectedStone);
 		selectedStone = null;
 		gm.turnEnded ();
 		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
-
+		}
 	}
 
 
@@ -196,41 +197,24 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void killStone(GameObject killedSton){
-		
 	
-
-			
 		if (killedSton.tag.Contains("black")) {//if black stone i skilled
-
-	
 			Vector3 temp = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
 			temp.x = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1].x * (-1.0F);
 					killedSton.transform.position = temp;
-	
-
 			} else {//if white stone i skilled
 
 			killedSton.transform.position = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
 		
-
-			
 			}
-
-		
-
-}
+	}
 
 	void initStonePositions(){
-	
 		stonePositions [0] = new Vector3 (2.2F, -3.9F, 90.0F);
 		stonePositions [1] = new Vector3 (2.2F, -2.6F, 90.0F);
 		stonePositions [2] = new Vector3 (2.2F, -3.2F, 90.0F);
 		stonePositions [3] = new Vector3 (2.2F, -1.4F, 90.0F);
 		stonePositions [4] = new Vector3 (2.2F, -2.0F, 90.0F);
-	
-	
-	
-	
 	}
 
 	Text returnLabelWithTag(string tag){
@@ -245,10 +229,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	RaycastHit2D findStoneFromArray(RaycastHit2D[] hitsList){
-
-
-		foreach (RaycastHit2D gm in hitsList) {
-
+	foreach (RaycastHit2D gm in hitsList) {
 			if (gm.collider.tag.Length==6) {
 				return gm;
 			}
@@ -258,15 +239,62 @@ public class UIManager : MonoBehaviour {
 
 
 	RaycastHit2D findFieldFromArray(RaycastHit2D[] hitsList){
-
-
 		foreach (RaycastHit2D gm in hitsList) {
-
 			if (gm.collider.tag.Length<4) {
 				return gm;
 			}
 		}
 	return new RaycastHit2D();
+	}		
+
+
+	public void rollDice(){
+		gm.rollDice();
 	}
+
+
+	public int getRoll(){
+		return gm.getRoll();
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

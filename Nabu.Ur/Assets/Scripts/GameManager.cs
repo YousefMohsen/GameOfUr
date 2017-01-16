@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class GameManager   {
 
+
+
 	Game game;
 
 	public GameManager(){
@@ -54,6 +56,21 @@ public class GameManager   {
 
 	}
 
+	public void rollDice  (){
+
+		game.rollDice();
+
+
+	}
+
+	public int getRoll(){
+		return game.getRoll();
+
+	}
+
+	public bool checkIfAllowedMove(string fromField, string toField, int roll){
+		return game.checkIfAllowedMove (fromField, toField, roll);
+	}
 
 
 }
