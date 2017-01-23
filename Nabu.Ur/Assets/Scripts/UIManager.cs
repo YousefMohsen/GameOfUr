@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour {
 	GameObject fromField;
 	GameManager gm;
 	//GameObject[] whites = new GameObject[5];
-	Vector3[] stonePositions = new Vector3[5];
+	Vector3[] stonePositions = new Vector3[6];
 
 	GameObject black3;
 	// Use this for initialization
@@ -29,9 +29,13 @@ public class UIManager : MonoBehaviour {
 
 		initStonePositions ();
 
-		setCurrentPlayerLabel(gm.getCurrentPlayer().name );
+		//setCurrentPlayerLabel(gm.getCurrentPlayer().name );
 			
-
+	//	for (int i = 1; i < 7; i++) {
+	//		black3 = GameObject.FindGameObjectWithTag ("black" + i);
+	//		Debug.Log (black3.tag + " " + black3.transform.position);
+		
+//		}
 	
 
 	}
@@ -78,8 +82,8 @@ public class UIManager : MonoBehaviour {
 				selectedStone = null;
 			} else if (hits.Length == 1) {//if hit a field OR a stone
 				hit = hits [0];
-				Debug.Log ("length = 1 !!");
-				Debug.Log ("fromField: " + fromField.tag);
+//				Debug.Log ("length = 1 !!");
+//				Debug.Log ("fromField: " + fromField.tag);
 				if (hit.collider.tag.Contains (gm.getCurrentPlayer ().color)) {//i stone
 
 					highlightStoneOFF (selectedStone);
@@ -160,12 +164,12 @@ public class UIManager : MonoBehaviour {
 
 
 	void moveStone(GameObject moveTo, GameObject moveFrom,int roll){
-		Debug.Log ("roll" + roll);
-		Debug.Log ("moveFrom" + moveFrom.tag);
-		Debug.Log ("moveTo" + moveTo.tag);
+	//	Debug.Log ("roll" + roll);
+	//	Debug.Log ("moveFrom" + moveFrom.tag);
+	//	Debug.Log ("moveTo" + moveTo.tag);
 		if(gm.checkIfAllowedMove(moveFrom.tag, moveTo.tag,roll)){
 
-		Debug.Log("MOVESTONE "+ moveTo.tag );
+	//	Debug.Log("MOVESTONE "+ moveTo.tag );
 		selectedStone.transform.position = moveTo.transform.position;
 		highlightStoneOFF(selectedStone);
 		selectedStone = null;
@@ -204,7 +208,9 @@ public class UIManager : MonoBehaviour {
 	void killStone(GameObject killedSton){
 	
 		if (killedSton.tag.Contains("black")) {//if black stone i skilled
-			Vector3 temp = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
+			int index = int.Parse( (killedSton.tag.Substring(5)))-1;
+			Debug.Log ("index " + index);
+			Vector3 temp = stonePositions [index];
 			temp.x = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1].x * (-1.0F);
 					killedSton.transform.position = temp;
 			} else {//if white stone i skilled
@@ -215,11 +221,12 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void initStonePositions(){
-		stonePositions [0] = new Vector3 (2.2F, -3.9F, 90.0F);
-		stonePositions [1] = new Vector3 (2.2F, -2.6F, 90.0F);
-		stonePositions [2] = new Vector3 (2.2F, -3.2F, 90.0F);
-		stonePositions [3] = new Vector3 (2.2F, -1.4F, 90.0F);
-		stonePositions [4] = new Vector3 (2.2F, -2.0F, 90.0F);
+		stonePositions [0] = new Vector3 (2.2F, -2.7F, 90.0F);
+		stonePositions [1] = new Vector3 (2.2F, -3.3F, 90.0F);
+		stonePositions [2] = new Vector3 (2.2F, -2.1F, 90.0F);
+		stonePositions [3] = new Vector3 (2.2F, -1.6F, 90.0F);
+		stonePositions [4] = new Vector3 (2.2F, -3.8F, 90.0F);
+		stonePositions [5] = new Vector3 (2.2F, -4.3F, 90.0F);
 	}
 
 	Text returnLabelWithTag(string tag){

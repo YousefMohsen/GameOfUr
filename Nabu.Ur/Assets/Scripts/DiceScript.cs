@@ -24,7 +24,5 @@ public class DiceScript : MonoBehaviour {
 		
 		var randomNumber= Random.Range (1, 5);
 		output.text = "Throwed: "+randomNumber;
-
-
-}
+	}
 }

@@ -22,12 +22,16 @@ public class Game  {
 
 
 	public Game(){
+		
 		initField ();
 		player1 = new Player ("Gudea",1);
 		player2 = new Player ("Nabu",2);
 		currentPlayer = player1;
-		Debug.Log ("checkIfAllowedMove: " + checkIfAllowedMove ("C1", "B3", 3));
-		roll = 3;
+		Debug.Log ("checkIfAllowedMove: " + checkIfAllowedMove ("A8", "A9", 4));
+		//roll = 4;
+
+
+	
 	}
 	// Use this for initialization
 
@@ -83,10 +87,11 @@ public class Game  {
 
 		p1FieldOrder.Add("A8");
 		p1FieldOrder.Add("A7");
+		p1FieldOrder.Add("A9");
 
 
 		// player 2 
-		p1FieldOrder.Add( "C0");// unplayed
+		p2FieldOrder.Add( "C0");// unplayed
 		p2FieldOrder.Add( "C4");
 		p2FieldOrder.Add("C3");
 		p2FieldOrder.Add("C2");
@@ -104,6 +109,7 @@ public class Game  {
 
 		p2FieldOrder.Add("C8");
 		p2FieldOrder.Add("C7");
+		p2FieldOrder.Add("C9");
 		// add finishline
 
 
@@ -128,8 +134,13 @@ public class Game  {
 			fieldOrder = p2FieldOrder;
 		
 		}
+
+
+
 		newInex = fieldOrder.IndexOf (fromField) + roll; 
-		if (fieldOrder [newInex].Equals (toField)) {
+		 if(fieldOrder.IndexOf (fromField)+roll>=15 && toField.Equals(fieldOrder[15])) {
+			return true;
+		} else if (fieldOrder [newInex].Equals (toField)) {
 		
 			return true;
 		} else {
@@ -150,7 +161,7 @@ public class Game  {
 			currentPlayer = player1;
 		
 		}
-		playerHasRolled = false;
+
 
 	}
 
@@ -159,7 +170,7 @@ public class Game  {
 	public void rollDice  (){
 
 		roll = Random.Range (1, 5);
-
+		Debug.Log (roll);
 	
 	}
 

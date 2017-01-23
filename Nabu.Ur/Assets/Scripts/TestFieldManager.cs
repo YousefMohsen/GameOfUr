@@ -31,7 +31,7 @@ public class TestFieldManager : MonoBehaviour {
 
 		turns = 0;
 		Vector3 pos = new Vector3 (10,10,0);
-
+		 	
 		//stone1.transform.position = pos;
 	}
 	
