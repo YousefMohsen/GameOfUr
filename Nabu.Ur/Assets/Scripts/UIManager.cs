@@ -13,7 +13,8 @@ public class UIManager : MonoBehaviour {
 	//GameObject[] whites = new GameObject[5];
 	Vector3[] stonePositions = new Vector3[6];
 
-	GameObject black3;
+	GameObject white1;
+	GameObject A2;
 	// Use this for initialization
 
 
@@ -25,7 +26,8 @@ public class UIManager : MonoBehaviour {
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
 	
-
+		white1 = GameObject.FindGameObjectWithTag ("white1");
+		A2 = GameObject.FindGameObjectWithTag ("C2");
 
 		initStonePositions ();
 
@@ -47,7 +49,7 @@ public class UIManager : MonoBehaviour {
 		if (Input.touchCount > 0) {
 			
 		selectStone ();
-	
+			Debug.Log ("selectedStone!! " + selectedStone.tag);
 
 		}
 
@@ -100,7 +102,7 @@ public class UIManager : MonoBehaviour {
 			} else if (hits.Length == 2) {//if hit a field AND a stone
 				RaycastHit2D stone = findStoneFromArray (hits);
 				RaycastHit2D field = findFieldFromArray (hits);
-				if (selectedStone != null && stone.collider.tag.Contains (getEnemyColor (gm.getCurrentPlayer ().color))) {//if there is an enemy stone on the field
+				if (selectedStone != null && stone.collider.tag.Contains (getEnemyColor ())) {//if there is an enemy stone on the field
 					//		stone.transform.position = white1.transform.position;
 
 					if(gm.checkIfRosetta(field.collider.tag)!=true){//if enemy is not on a rosetta field
@@ -163,6 +165,9 @@ public class UIManager : MonoBehaviour {
 
 
 
+
+
+
 	void moveStone(GameObject moveTo, GameObject moveFrom,int roll){
 	//	Debug.Log ("roll" + roll);
 	//	Debug.Log ("moveFrom" + moveFrom.tag);
@@ -172,8 +177,13 @@ public class UIManager : MonoBehaviour {
 	//	Debug.Log("MOVESTONE "+ moveTo.tag );
 		selectedStone.transform.position = moveTo.transform.position;
 		highlightStoneOFF(selectedStone);
-		selectedStone = null;
 		
+		//update board
+			gm.updateBoard(selectedStone.tag,moveFrom.tag, moveTo.tag);
+
+
+		selectedStone = null;
+	
 		
 			if (gm.checkIfRosetta (moveTo.tag)) {//check if landen on rosetta field
 				gm.setPlayerHasRolled (false);
@@ -181,7 +191,7 @@ public class UIManager : MonoBehaviour {
 			} else {
 				gm.turnEnded ();
 				setCurrentPlayerLabel(gm.getCurrentPlayer().name );
-
+				if (gm.getCurrentPlayer ().isHuman == false) { computerTurn ();}
 			}
 		
 		
@@ -189,19 +199,18 @@ public class UIManager : MonoBehaviour {
 	}
 
 
-
-	string getEnemyColor(string currentPlayerColor){
-
-		if (currentPlayerColor.Equals ("white")) {
-			return "black";
-		} else if (currentPlayerColor.Equals ("black")) {
-		
-			return "white";
-		} else {
-			return null;
-		}
+	void AIMove(){
 
 
+
+
+
+	}
+
+
+	public	string getEnemyColor(){
+
+		return gm.getEnemyColor ();
 	}
 
 
@@ -216,7 +225,7 @@ public class UIManager : MonoBehaviour {
 			} else {//if white stone i skilled
 
 			killedSton.transform.position = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
-		
+		//updateBoard
 			}
 	}
 
@@ -261,11 +270,32 @@ public class UIManager : MonoBehaviour {
 
 
 	public void rollDice(){
-		if (gm.getPlayerHasRolled() == false) {
+		//if (gm.getPlayerHasRolled() == false) {
 			Debug.Log ("257 getPlayerHasRolled");
 			gm.rollDice ();
 			setDiceLabel (gm.getRoll () + " ");
 			gm.setPlayerHasRolled (true);
+		//}
+	}
+
+	void computerTurn(){
+		if(!gm.getCurrentPlayer().isHuman){//only if currentplayer is computer
+			string[] compMoves = gm.getComputerMove();
+			GameObject stone = GameObject.FindGameObjectWithTag(compMoves[0]); 
+			GameObject toField = GameObject.FindGameObjectWithTag(compMoves[1]); 
+	
+		
+			Debug.Log (stone.tag+" "+stone.transform.position);
+			Debug.Log (toField.tag+" "+toField.transform.position);
+
+			highlightStone (stone);
+			
+			stone.transform.position = toField.transform.position;
+			highlightStoneOFF (stone);
+
+			gm.turnEnded ();
+
+
 		}
 	}
 

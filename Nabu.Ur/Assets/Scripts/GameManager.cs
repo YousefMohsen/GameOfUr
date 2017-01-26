@@ -26,7 +26,7 @@ public class GameManager   {
 
 
 	 void startGame(){
-		game = new Game();
+		game = new Game(true);//true = against computer , false = 2 players
 	
 	}
 
@@ -41,20 +41,20 @@ public class GameManager   {
 
 
 
-		game.changeCurrentPlayer ();
+		game.turnEnded ();
 	}
 
 
 
+	public string[] getComputerMove(){
 
 
-	void doTjek(){
-		
-		if (game.player1.won == true || game.player2.won == true) {//1 tjek if anyone has won
-			game.finished = true;
-		}
+			return  game.getComputerMove ();//
 
+		//return new string[2]{"white2","B5"};//
+	
 	}
+
 
 	public void rollDice  (){
 
@@ -88,6 +88,17 @@ public class GameManager   {
 	
 		return game.checkIfRosetta (stoneTag);
 	
+	}
+
+
+	public void updateBoard( string stoneV, string fromFieldK, string ToFieldK){
+	
+		game.updateBoard (stoneV, fromFieldK, ToFieldK);
+	}
+
+	public	string getEnemyColor(){
+
+		return game.getEnemyColor ();
 	}
 
 }
