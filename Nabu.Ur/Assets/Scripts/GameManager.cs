@@ -101,4 +101,11 @@ public class GameManager   {
 		return game.getEnemyColor ();
 	}
 
+
+	public void updateKill(string field){
+	
+
+		game.updateKill (field);
+	}
+
 }

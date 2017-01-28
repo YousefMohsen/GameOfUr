@@ -14,16 +14,14 @@ public class AIOne : Player  {// random
 
 		Debug.Log ("AIONE constructer");
 	
-		stonesOnBoard.Add("white1");
-		stonesOnBoard.Add("white2");
-		stonesOnBoard.Add("white3");
+
 	}
 		
 
 
 
 	public override string[] calcMove(int roll, Dictionary<string, string > boardStatus ){
-		string[] result = new string[3];
+		string[] result = new string[4];
 		Dictionary<string, string > maStones = findMyStones (boardStatus);
 
 		//1) find stone
@@ -46,14 +44,25 @@ public class AIOne : Player  {// random
 		}
 		
 			 
-			
+		if (AiCheckIfAllowed (toField, boardStatus)) {
+			result [0] = stone;
+			result [1] = toField;
+			result [2] = fromField;
+			result [3] = "1";//// 1=a move is calculated
+		
+		} else {//if no possible move
+		
+			result [0] = stone;
+			result [1] = toField;
+			result [2] = fromField;
+			result [3] = "2";///// 2=a no possible move is found
+		
+		}
 			
 		
 
 
-		result [0] = stone;
-		result [1] = toField;
-		result [2] = fromField;
+	
 
 
 
@@ -64,7 +73,7 @@ public class AIOne : Player  {// random
 
 	public override string findToField (string froField, int roll){
 		int nIndex = fieldOrder.IndexOf (froField) + roll;
-		Debug.Log ("nIndex" + nIndex+"froField: "+froField);
+	//	Debug.Log ("nIndex" + nIndex+"froField: "+froField);
 		string toFied = fieldOrder [nIndex];
 
 

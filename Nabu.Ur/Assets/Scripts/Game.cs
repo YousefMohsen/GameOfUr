@@ -28,6 +28,7 @@ public class Game  {
 		againstComputer = aganstComputerv;
 		initBoardStatus ();
 	//	deleteMe();
+		initRosetta();
 		player1 = new Player ("Gudea",1);
 		currentPlayer = player1;
 
@@ -43,7 +44,18 @@ public class Game  {
 
 
 
-	
+	//	getComputerMove ();
+
+		Debug.Log("checkIfKill B4 "+checkIfKill("B4"));
+		Debug.Log("checkIfKill B5 "+checkIfKill("B5"));
+		Debug.Log("checkIfKill B6 "+checkIfKill("B6"));
+		/*Debug.Log("checkAI B5"+currentPlayer.AiCheckIfAllowed("B5", boardStatus));
+		Debug.Log("checkAI B4"+currentPlayer.AiCheckIfAllowed("B4", boardStatus));
+		Debug.Log("checkAI B3"+currentPlayer.AiCheckIfAllowed("B3", boardStatus));
+		Debug.Log("checkAI B2"+currentPlayer.AiCheckIfAllowed("B2", boardStatus));
+*/
+
+
 	//	deleteMe ();
 	//	Debug.Log("checkIfAllowedMove"+currentPlayer.checkIfAllowedMove("A1","B2",2));
 	//	Debug.Log("checkIfAllowedMove"+currentPlayer.checkIfAllowedMove("B3","B6",3));
@@ -80,19 +92,19 @@ public class Game  {
 		boardStatus.Add ("A8", "");
 
 
-		boardStatus.Add ("B1", "white1");
-		boardStatus.Add ("B2", "");
-		boardStatus.Add ("B3", "white5");
+		boardStatus.Add ("B1", "white3");
+		boardStatus.Add ("B2", "white2");
+		boardStatus.Add ("B3", "white1");
 		boardStatus.Add ("B4", "black2");
-		boardStatus.Add ("B5", "");
+		boardStatus.Add ("B5", "black3");
 		boardStatus.Add ("B6", "");
 		boardStatus.Add ("B7", "");
 		boardStatus.Add ("B8", "");
 
 
-		boardStatus.Add ("C1", "");
-		boardStatus.Add ("C2", "");
-		boardStatus.Add ("C3", "");
+		boardStatus.Add ("C1", "white4");
+		boardStatus.Add ("C2", "white5");
+		boardStatus.Add ("C3", "white6");
 		boardStatus.Add ("C4", "");
 		boardStatus.Add ("C7", "");
 		boardStatus.Add ("C8", "");
@@ -124,7 +136,7 @@ public class Game  {
 		
 		}
 
-
+		printBoardStatus ();
 	}
 
 	void checkWin(){
@@ -169,10 +181,10 @@ public class Game  {
 	}
 
 
-	public bool checkIfRosetta(string stoneTag){
+	public bool checkIfRosetta(string fieldTag){
 	
 		foreach (string f in rosettaFields) {
-			if (stoneTag.Equals (f)) {
+			if (fieldTag.Equals (f)) {
 				return true;
 			}
 		
@@ -245,19 +257,55 @@ public class Game  {
 		string stone = computerMoves [0];
 		string toField = computerMoves [1];
 		string froField = computerMoves [2];
-		updateBoard (stone, froField, toField);
+		string moveFound = computerMoves [3];//2= no, //1=yes
+
+		if(moveFound.Equals("1")){//if valid move, update board
+			updateBoard (stone, froField, toField);
+			updateKill(toField);
+
+		}
+	
+
+	
+
+
+		return new string[3] {stone, toField,moveFound};
 
 
 
+	}
+	public bool checkIfKill(string field){
 
-		return new string[2] {stone, toField};
-
-
-
+	
+	
+		return boardStatus [field].Contains (getEnemyColor ()) && checkIfRosetta (field) == false;
+		
 	}
 
 	public	string getEnemyColor(){
 
 		return currentPlayer.getEnemyColor ();
+	}
+
+	public void updateKill(string field){
+
+		if(checkIfKill(field)){
+		boardStatus[field] = "";
+				}
+
+
+	}
+
+
+
+	void printBoardStatus(){
+
+		string print = "PRINTING BOARDSTATUS  ";
+		foreach (string k in boardStatus.Keys) {
+		
+		
+			print+= " ("+k + " - " + boardStatus [k]+") " ;
+		}
+		Debug.Log (print);
 	}
 }

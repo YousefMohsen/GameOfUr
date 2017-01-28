@@ -102,11 +102,12 @@ public class UIManager : MonoBehaviour {
 			} else if (hits.Length == 2) {//if hit a field AND a stone
 				RaycastHit2D stone = findStoneFromArray (hits);
 				RaycastHit2D field = findFieldFromArray (hits);
+				Debug.Log ("FINDSTONE " + stone.collider.tag);		
 				if (selectedStone != null && stone.collider.tag.Contains (getEnemyColor ())) {//if there is an enemy stone on the field
 					//		stone.transform.position = white1.transform.position;
 
 					if(gm.checkIfRosetta(field.collider.tag)!=true){//if enemy is not on a rosetta field
-					killStone (stone.transform.gameObject);
+						killStone (stone.transform.gameObject, field.collider.tag);
 		
 					moveStone (field.collider.gameObject, fromField, gm.getRoll ());
 					}
@@ -191,7 +192,7 @@ public class UIManager : MonoBehaviour {
 			} else {
 				gm.turnEnded ();
 				setCurrentPlayerLabel(gm.getCurrentPlayer().name );
-				if (gm.getCurrentPlayer ().isHuman == false) { computerTurn ();}
+				if (gm.getCurrentPlayer ().isHuman == false) { computerTurn (); setDiceLabel (gm.getRoll ()+"");}
 			}
 		
 		
@@ -214,7 +215,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 
-	void killStone(GameObject killedSton){
+	void killStone(GameObject killedSton, string field){
 	
 		if (killedSton.tag.Contains("black")) {//if black stone i skilled
 			int index = int.Parse( (killedSton.tag.Substring(5)))-1;
@@ -226,7 +227,10 @@ public class UIManager : MonoBehaviour {
 
 			killedSton.transform.position = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
 		//updateBoard
+
 			}
+		gm.updateKill (field);
+	
 	}
 
 	void initStonePositions(){
@@ -250,9 +254,9 @@ public class UIManager : MonoBehaviour {
 	}
 
 	RaycastHit2D findStoneFromArray(RaycastHit2D[] hitsList){
-	foreach (RaycastHit2D gm in hitsList) {
-			if (gm.collider.tag.Length==6) {
-				return gm;
+	foreach (RaycastHit2D aHit in hitsList) {
+			if (aHit.collider.tag.Length==6) {
+				return aHit;
 			}
 		}
 		return new RaycastHit2D();
@@ -279,24 +283,29 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void computerTurn(){
-		if(!gm.getCurrentPlayer().isHuman){//only if currentplayer is computer
+	//	if(!gm.getCurrentPlayer().isHuman){//only if currentplayer is computer
+	
+	
 			string[] compMoves = gm.getComputerMove();
 			GameObject stone = GameObject.FindGameObjectWithTag(compMoves[0]); 
 			GameObject toField = GameObject.FindGameObjectWithTag(compMoves[1]); 
-	
+			string moveFound = compMoves [3];//2= no, //1=yes
+			if (moveFound.Equals ("1")) {
 		
-			Debug.Log (stone.tag+" "+stone.transform.position);
-			Debug.Log (toField.tag+" "+toField.transform.position);
+				Debug.Log (stone.tag + " " + stone.transform.position);
+				Debug.Log (toField.tag + " " + toField.transform.position);
 
-			highlightStone (stone);
+				highlightStone (stone);
 			
-			stone.transform.position = toField.transform.position;
-			highlightStoneOFF (stone);
+				stone.transform.position = toField.transform.position;
+				highlightStoneOFF (stone);
 
-			gm.turnEnded ();
+				gm.turnEnded ();
 
-
-		}
+			} else {
+				gm.turnEnded ();
+			}
+		//}
 	}
 
 
