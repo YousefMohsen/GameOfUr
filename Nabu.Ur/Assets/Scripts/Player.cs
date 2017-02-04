@@ -218,10 +218,23 @@ public class Player {
 	}
 
 	public bool AiCheckIfAllowed(string field, Dictionary<string, string > board){
+	/*Debug.Log ("--- --- --- --- --- --- --- --- --- -- --- ");
+
+		Debug.Log ("field "+field);
+	//	Debug.Log ("board [field] "+board [field]);
+	//	Debug.Log ("getEnemyColor()"+getEnemyColor());
+
+		Debug.Log ("true false ");
+		Debug.Log ("checkIfRosetta(field)"+checkIfRosetta(field));
+		Debug.Log ("(board [field].Contains (color)"+(board [field].Contains (color)));
+		Debug.Log ("board [field].Length < 3"+(board [field].Length < 3));
+		Debug.Log ("board [field].Contains (getEnemyColor())"+board [field].Contains (getEnemyColor()));
 
 	
+		Debug.Log ("////////////////////////////////// "); */
 
-		if (board [field].Length < 3 || (board [field].Contains (getEnemyColor()) && checkIfRosetta(field) == false)) {
+
+		if (board [field].Length < 3 || (board [field].Contains (getEnemyColor()) && checkIfRosetta(field) == false) || (!board [field].Contains (color) )) {
 
 
 
@@ -229,6 +242,16 @@ public class Player {
 		} else {
 			return false;
 		}
+	}
+
+	public bool AiCheckIfKillStone(string field, Dictionary<string, string > board){
+		if (board [field].Contains (getEnemyColor() )){
+
+			return true;
+		}
+		return false;
+	
+	
 	}
 
 

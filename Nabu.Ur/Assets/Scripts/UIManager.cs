@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour {
 		diceLabel = returnLabelWithTag ("diceLabel");
 		currentPLabel = returnLabelWithTag ("currentPlayer");
 	
-		white1 = GameObject.FindGameObjectWithTag ("white1");
+		white1 = GameObject.FindGameObjectWithTag ("black4");
 		A2 = GameObject.FindGameObjectWithTag ("C2");
 
 		initStonePositions ();
@@ -107,9 +107,14 @@ public class UIManager : MonoBehaviour {
 					//		stone.transform.position = white1.transform.position;
 
 					if(gm.checkIfRosetta(field.collider.tag)!=true){//if enemy is not on a rosetta field
-						killStone (stone.transform.gameObject, field.collider.tag);
+					
+						if (gm.checkIfAllowedMove (fromField.tag, field.collider.tag, gm.getRoll())) {
+							Debug.Log ("112 in checkmove kill");
+							killStone (stone.transform.gameObject);//, field.collider.ta
+							moveStone (field.collider.gameObject, fromField, gm.getRoll ());
+						}
 		
-					moveStone (field.collider.gameObject, fromField, gm.getRoll ());
+					
 					}
 
 			
@@ -185,14 +190,25 @@ public class UIManager : MonoBehaviour {
 
 		selectedStone = null;
 	
-		
-			if (gm.checkIfRosetta (moveTo.tag)) {//check if landen on rosetta field
+			if(isFinish(moveTo.tag)){
+				stoneReachedFinish (selectedStone);
+
+			}	
+			if (gm.checkIfRosetta (moveTo.tag)) {//check if landed on rosetta field
 				gm.setPlayerHasRolled (false);
 
 			} else {
 				gm.turnEnded ();
 				setCurrentPlayerLabel(gm.getCurrentPlayer().name );
-				if (gm.getCurrentPlayer ().isHuman == false) { computerTurn (); setDiceLabel (gm.getRoll ()+"");}
+				gm.setPlayerHasRolled (false);
+		
+				if (gm.getCurrentPlayer().isHuman == false) {
+
+				
+
+					computerTurn (); 
+					setDiceLabel (gm.getRoll ()+"");
+				}
 			}
 		
 		
@@ -200,13 +216,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 
-	void AIMove(){
 
-
-
-
-
-	}
 
 
 	public	string getEnemyColor(){
@@ -215,21 +225,23 @@ public class UIManager : MonoBehaviour {
 	}
 
 
-	void killStone(GameObject killedSton, string field){
-	
-		if (killedSton.tag.Contains("black")) {//if black stone i skilled
-			int index = int.Parse( (killedSton.tag.Substring(5)))-1;
-			Debug.Log ("index " + index);
-			Vector3 temp = stonePositions [index];
-			temp.x = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1].x * (-1.0F);
-					killedSton.transform.position = temp;
+	void killStone(GameObject killedSton){
+	//	void killStone(GameObject killedSton, string field){
+		
+			if (killedSton.tag.Contains ("black")) {//if black stone i skilled
+				int index = int.Parse ((killedSton.tag.Substring (5))) - 1;
+				Debug.Log ("index " + index);
+				Vector3 temp = stonePositions [index];
+				temp.x = stonePositions [int.Parse ((killedSton.tag.Substring (5))) - 1].x * (-1.0F);
+				killedSton.transform.position = temp;
 			} else {//if white stone i skilled
 
-			killedSton.transform.position = stonePositions [int.Parse( (killedSton.tag.Substring(5)))-1];
-		//updateBoard
+				killedSton.transform.position = stonePositions [int.Parse ((killedSton.tag.Substring (5))) - 1];
+				//updateBoard
 
 			}
-		gm.updateKill (field);
+		//	gm.updateKill (field);
+	
 	
 	}
 
@@ -274,12 +286,11 @@ public class UIManager : MonoBehaviour {
 
 
 	public void rollDice(){
-		//if (gm.getPlayerHasRolled() == false) {
-			Debug.Log ("257 getPlayerHasRolled");
+		if (gm.getPlayerHasRolled() == false) {
 			gm.rollDice ();
 			setDiceLabel (gm.getRoll () + " ");
 			gm.setPlayerHasRolled (true);
-		//}
+	}
 	}
 
 	void computerTurn(){
@@ -287,27 +298,64 @@ public class UIManager : MonoBehaviour {
 	
 	
 			string[] compMoves = gm.getComputerMove();
-			GameObject stone = GameObject.FindGameObjectWithTag(compMoves[0]); 
-			GameObject toField = GameObject.FindGameObjectWithTag(compMoves[1]); 
-			string moveFound = compMoves [3];//2= no, //1=yes
-			if (moveFound.Equals ("1")) {
+
+
+		GameObject stone = GameObject.FindGameObjectWithTag(compMoves[0]); 
+		GameObject toField = GameObject.FindGameObjectWithTag(compMoves[1]); 
+		string moveFound = compMoves [2];//2= no, //1=yes
+		string ifKill = compMoves[3];//2= no, //1=yes
+	
+			if (moveFound.Equals ("1")) {//if a move is calculated
 		
 				Debug.Log (stone.tag + " " + stone.transform.position);
 				Debug.Log (toField.tag + " " + toField.transform.position);
 
 				highlightStone (stone);
-			
+				
+			if (ifKill.Length>2) {
+				
+				GameObject toKill = GameObject.FindGameObjectWithTag(ifKill); 
+				killStone (toKill);
+
+			}
+			Debug.Log ("ifKill: "+ifKill);
 				stone.transform.position = toField.transform.position;
 				highlightStoneOFF (stone);
 
 				gm.turnEnded ();
 
-			} else {
+
+		
+		} else {
 				gm.turnEnded ();
 			}
 		//}
+
+		Debug.Log("-- -- -- -- -- -- -- -- -- -- ");
+		Debug.Log ("stone "+stone.tag);
+		Debug.Log ("toField "+toField.tag);
+		Debug.Log ("moveFound "+moveFound);
 	}
 
+
+	void stoneReachedFinish(GameObject stone){
+
+
+		CircleCollider2D cc =	(CircleCollider2D)stone.GetComponent ("CircleCollider2D");
+		cc.enabled = false;
+
+
+
+
+	}
+
+	bool isFinish(string field){
+		if (field.Equals ("C9") || field.Equals ("A9")) {
+		
+			return true;
+		} 
+		return false;
+	}
 
 
 

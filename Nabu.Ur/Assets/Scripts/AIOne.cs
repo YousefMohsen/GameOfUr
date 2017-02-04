@@ -21,7 +21,7 @@ public class AIOne : Player  {// random
 
 
 	public override string[] calcMove(int roll, Dictionary<string, string > boardStatus ){
-		string[] result = new string[4];
+		string[] result = new string[5];
 		Dictionary<string, string > maStones = findMyStones (boardStatus);
 
 		//1) find stone
@@ -50,6 +50,7 @@ public class AIOne : Player  {// random
 			result [2] = fromField;
 			result [3] = "1";//// 1=a move is calculated
 		
+		
 		} else {//if no possible move
 		
 			result [0] = stone;
@@ -61,7 +62,12 @@ public class AIOne : Player  {// random
 			
 		
 
-
+		if (AiCheckIfKillStone (toField,boardStatus)) {
+			result [4] = boardStatus [toField];
+		
+		} else {
+			result [4] = "0";
+		}
 	
 
 

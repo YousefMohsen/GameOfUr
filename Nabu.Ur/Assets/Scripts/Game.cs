@@ -44,11 +44,19 @@ public class Game  {
 
 
 
+
+
 	//	getComputerMove ();
 
-		Debug.Log("checkIfKill B4 "+checkIfKill("B4"));
-		Debug.Log("checkIfKill B5 "+checkIfKill("B5"));
-		Debug.Log("checkIfKill B6 "+checkIfKill("B6"));
+		//Debug.Log("player1:  "+player1.name+" isHuman: "+player1.isHuman+" id: "+player1.id+" color: "+player1.color);
+		//Debug.Log("player2:  "+player2.name+" isHuman: "+player2.isHuman+" id: "+player2.id+" color: "+player2.color);
+
+	
+
+
+
+
+			
 		/*Debug.Log("checkAI B5"+currentPlayer.AiCheckIfAllowed("B5", boardStatus));
 		Debug.Log("checkAI B4"+currentPlayer.AiCheckIfAllowed("B4", boardStatus));
 		Debug.Log("checkAI B3"+currentPlayer.AiCheckIfAllowed("B3", boardStatus));
@@ -92,19 +100,19 @@ public class Game  {
 		boardStatus.Add ("A8", "");
 
 
-		boardStatus.Add ("B1", "white3");
-		boardStatus.Add ("B2", "white2");
-		boardStatus.Add ("B3", "white1");
-		boardStatus.Add ("B4", "black2");
-		boardStatus.Add ("B5", "black3");
+		boardStatus.Add ("B1", "");
+		boardStatus.Add ("B2", "");
+		boardStatus.Add ("B3", "");
+		boardStatus.Add ("B4", "");
+		boardStatus.Add ("B5", "");
 		boardStatus.Add ("B6", "");
 		boardStatus.Add ("B7", "");
 		boardStatus.Add ("B8", "");
 
 
-		boardStatus.Add ("C1", "white4");
-		boardStatus.Add ("C2", "white5");
-		boardStatus.Add ("C3", "white6");
+		boardStatus.Add ("C1", "");
+		boardStatus.Add ("C2", "");
+		boardStatus.Add ("C3", "");
 		boardStatus.Add ("C4", "");
 		boardStatus.Add ("C7", "");
 		boardStatus.Add ("C8", "");
@@ -145,8 +153,8 @@ public class Game  {
 				finished = true;
 			}
 
-		
 	}
+
 
 	public void turnEnded(){
 	
@@ -258,18 +266,22 @@ public class Game  {
 		string toField = computerMoves [1];
 		string froField = computerMoves [2];
 		string moveFound = computerMoves [3];//2= no, //1=yes
+		string ifKill = computerMoves [4];
 
 		if(moveFound.Equals("1")){//if valid move, update board
 			updateBoard (stone, froField, toField);
-			updateKill(toField);
 
+
+		}
+		if (ifKill.Length > 2) {
+			updateKill (toField);
 		}
 	
 
 	
 
 
-		return new string[3] {stone, toField,moveFound};
+		return new string[4] {stone, toField,moveFound,ifKill};
 
 
 
@@ -295,7 +307,6 @@ public class Game  {
 
 
 	}
-
 
 
 	void printBoardStatus(){
